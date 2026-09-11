@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UFV Advising Place Based</title>
+
+<style>
+:root{
+  --navy:#17324d;
+  --blue:#246b9e;
+  --light:#f4f7fa;
+  --border:#d8e0e8;
+  --text:#243342;
+  --muted:#697887;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Segoe UI,Arial,sans-serif;
+  background:var(--light);
+  color:var(--text);
+}
+
+.topbar{
+  background:var(--navy);
+  color:#fff;
+  padding:18px 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.topbar-text h1{margin:0;font-size:21px}
+.topbar-text p{margin:5px 0 0;font-size:13px;opacity:.82}
+
+.back-link{
+  color:#fff;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:600;
+  padding:8px 14px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:7px;
+  white-space:nowrap;
+}
+
+.back-link:hover{
+  background:rgba(255,255,255,.12);
+}
+
+.wrap{
+  max-width:760px;
+  margin:26px auto;
+  padding:0 20px;
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  box-shadow:0 2px 8px rgba(20,40,60,.05);
+  padding:23px;
+}
+
+h2{margin:0 0 5px;color:var(--navy);font-size:19px}
+.intro{margin:0 0 18px;color:var(--muted);font-size:13px}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:5px;
+}
+
+select{
+  width:100%;
+  padding:10px 11px;
+  border:1px solid #cbd5df;
+  border-radius:7px;
+  background:#fff;
+  font-size:14px;
+  color:var(--text);
+}
+
+select:focus{
+  outline:none;
+  border-color:var(--blue);
+  box-shadow:0 0 0 2px rgba(36,107,158,.1);
+}
+
+.results{
+  margin-top:22px;
+}
+
+.empty{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  padding:30px 10px;
+}
+
+.location-block{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:12px;
+  background:#fafcfd;
+}
+
+.location-block:last-child{margin-bottom:0}
+
+.location-title{
+  font-weight:700;
+  color:var(--navy);
+  font-size:15px;
+  margin-bottom:8px;
+}
+
+.advisor-row{
+  font-size:13px;
+  color:#526170;
+  padding:5px 0;
+  border-top:1px solid #edf1f4;
+}
+
+.advisor-row:first-of-type{border-top:0}
+
+.date-label{
+  display:inline-block;
+  margin:18px 0 0;
+  padding:5px 10px;
+  border-radius:16px;
+  background:#eaf2f8;
+  color:var(--blue);
+  font-size:11px;
+  font-weight:700;
+}
+
+.footer{
+  font-size:10px;
+  color:var(--muted);
+  margin-top:16px;
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="topbar-text">
+    <h1>Advising Place Based</h1>
+    <p>Find where place-based advising is happening and which advisor is at each location.</p>
+  </div>
+  <a class="back-link" href="index.html">&larr; Back to Home</a>
+</div>
+
+<div class="wrap">
+
+<section class="card">
+
+  <h2>Select a Date</h2>
+  <p class="intro">Choose a date to see the locations and advisors scheduled for place-based advising.</p>
+
+  <label for="dateSelect">Date</label>
+  <select id="dateSelect" onchange="showSchedule()">
+    <option value="">Select a date...</option>
+  </select>
+
+  <div class="results" id="results">
+    <div class="empty">Select a date above to see the schedule.</div>
+  </div>
+
+</section>
+
+<div class="footer">
+  Prototype only. Confirm locations and advisor availability with the Academic Advising Centre before directing students.
+</div>
+
+</div>
+
+<script>
+/* =========================================================
+   PLACE-BASED ADVISING SCHEDULE
+   =========================================================
+   Add / edit entries here. Each date key holds a display label
+   and a list of locations. Each location holds one or more
+   advisors scheduled there on that date.
+
+   NOTE ON DATA AS PROVIDED:
+   The Sept 9th entries were given as [Location, Advisor] pairs:
+     [Global Lounge, Nicholas]
+     [ISC@CEP, Lá:léms Ye EverGreen]
+     [Lá:léms Ye EverGreen, Rilla]
+   "Lá:léms Ye EverGreen" appears once as an advisor name and once
+   as a location name. This has been entered literally below —
+   please confirm this is correct and adjust if needed.
+   ========================================================= */
+
+const schedule = {
+
+  "every-friday": {
+    label: "Every Friday",
+    locations: [
+      {
+        location: "Building C",
+        advisors: ["Paula"]
+      }
+    ]
+  },
+
+  "sept-9": {
+    label: "Sept 9th",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Nicholas"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Karen"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Rilla"]
+      }
+    ]
+  },
+  
+   "sept-16": {
+    label: "Sept 16th",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Adrian"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Kathryn"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Eve"]
+      }
+    ]
+  },
+  
+  "sept-23rd": {
+    label: "Sept 23rd",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Vanessa"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Karen"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Rilla"]
+      }
+    ]
+  },
+  
+    "sept-30th": {
+    label: "Sept-30th",
+    locations: [
+      {
+        location: "Stat Holiday",
+        advisors: ["Campus closure"]
+      },
+      
+    ]
+  },
+  
+    "Oct-7th": {
+    label: "Oct 7th",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Nicholas"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Karen"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Rilla"]
+      }
+    ]
+  },
+  
+      "Oct-14th": {
+    label: "Oct 14th",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Adrian"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Kathyrn"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Eve"]
+      }
+    ]
+  },
+  
+  "Oct-21st": {
+    label: "Oct 21st",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Vanessa"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Karen"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Rilla"]
+      }
+    ]
+  },
+
+
+    "Oct-28th": {
+    label: "Oct 28th",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Nicholas"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Kathryn"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Eve"]
+      }
+    ]
+  },
+
+ "Nov-4th": {
+    label: "Nov 14th",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Adrian"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Karen"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Rilla"]
+      }
+    ]
+  },
+  
+     "Nov-11th": {
+    label: "Nov-11th",
+    locations: [
+      {
+        location: "Stat Holiday",
+        advisors: ["Campus closure"]
+      },
+      
+    ]
+  }, 
+  
+ "Nov-18th": {
+    label: "Nov-18th",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Vanessa"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Karen"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Rilla"]
+      }
+    ]
+  }, 
+  
+  
+  "Nov-25th": {
+    label: "Nov-25th",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Nicholas"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Kathryn"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Eve"]
+      }
+    ]
+  }, 
+  
+ "Dec-2nd": {
+    label: "Dec-2nd",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Adrian"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Karen"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Rilla"]
+      }
+    ]
+  }, 
+  
+  "Dec-9th": {
+    label: "Dec-9th",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Vanessa"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Kathryn"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Eve"]
+      }
+    ]
+  }, 
+  
+  
+    "Dec-16th": {
+    label: "Dec-16th",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Nicholas"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Karen"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Rilla"]
+      }
+    ]
+  },
+  
+   
+    "Dec-23rd": {
+    label: "Dec-23rd",
+    locations: [
+      {
+        location: "Global Lounge",
+        advisors: ["Adrian"]
+      },
+      {
+        location: "ISC@CEP",
+        advisors: ["Kathryn"]
+      },
+      {
+        location: "Lá:léms Ye EverGreen",
+        advisors: ["Eve"]
+      }
+    ]
+  }, 
+
+};
+
+/* =========================================================
+   POPULATE DATE DROPDOWN
+   ========================================================= */
+
+function fillDates(){
+
+  const select = document.getElementById("dateSelect");
+
+  Object.entries(schedule).forEach(([key, entry]) => {
+    const option = document.createElement("option");
+    option.value = key;
+    option.textContent = entry.label;
+    select.appendChild(option);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", fillDates);
+
+/* =========================================================
+   RENDER SCHEDULE FOR SELECTED DATE
+   ========================================================= */
+
+function showSchedule(){
+
+  const key = document.getElementById("dateSelect").value;
+  const results = document.getElementById("results");
+
+  if(!key){
+    results.innerHTML = `<div class="empty">Select a date above to see the schedule.</div>`;
+    return;
+  }
+
+  const entry = schedule[key];
+
+  const blocks = entry.locations.map(item => `
+    <div class="location-block">
+      <div class="location-title">${item.location}</div>
+      ${item.advisors.map(name => `
+        <div class="advisor-row">${name}</div>
+      `).join("")}
+    </div>
+  `).join("");
+
+  results.innerHTML = `
+    <div class="date-label">${entry.label}</div>
+    <div style="margin-top:10px">
+      ${blocks}
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>
