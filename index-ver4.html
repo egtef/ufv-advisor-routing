@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>UFV Front Desk Advisor Routing Assistant</title>
 
 <style>
-
 :root{
   --navy:#17324d;
   --blue:#246b9e;
@@ -19,11 +17,11 @@
   --greenbg:#eaf7f0;
   --amber:#9a6700;
   --amberbg:#fff7df;
+  --red:#a33a3a;
+  --redbg:#fff0f0;
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -36,28 +34,40 @@ body{
   background:var(--navy);
   color:#fff;
   padding:18px 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
 }
 
-.topbar h1{
-  margin:0;
-  font-size:21px;
-}
+.topbar-text h1{margin:0;font-size:21px}
+.topbar-text p{margin:5px 0 0;font-size:13px;opacity:.82}
 
-.topbar p{
-  margin:5px 0 0;
+.back-link{
+  color:#fff;
+  text-decoration:none;
   font-size:13px;
-  opacity:.82;
+  font-weight:600;
+  padding:8px 14px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:7px;
+  white-space:nowrap;
+}
+
+.back-link:hover{
+  background:rgba(255,255,255,.12);
 }
 
 .wrap{
-  max-width:1180px;
+  max-width:1200px;
   margin:26px auto;
   padding:0 20px;
 }
 
 .grid{
   display:grid;
-  grid-template-columns:minmax(0,1fr) 390px;
+  grid-template-columns:minmax(0,1fr) 410px;
   gap:20px;
 }
 
@@ -69,17 +79,8 @@ body{
   padding:23px;
 }
 
-h2{
-  margin:0 0 5px;
-  color:var(--navy);
-  font-size:19px;
-}
-
-.intro{
-  margin:0 0 18px;
-  color:var(--muted);
-  font-size:13px;
-}
+h2{margin:0 0 5px;color:var(--navy);font-size:19px}
+.intro{margin:0 0 18px;color:var(--muted);font-size:13px}
 
 .section{
   margin:20px 0 9px;
@@ -96,9 +97,7 @@ h2{
   gap:14px;
 }
 
-.full{
-  grid-column:1/-1;
-}
+.full{grid-column:1/-1}
 
 label{
   display:block;
@@ -107,8 +106,7 @@ label{
   margin-bottom:5px;
 }
 
-select,
-input{
+select,input{
   width:100%;
   padding:10px 11px;
   border:1px solid #cbd5df;
@@ -118,16 +116,13 @@ input{
   color:var(--text);
 }
 
-select:focus,
-input:focus{
+select:focus,input:focus{
   outline:none;
   border-color:var(--blue);
   box-shadow:0 0 0 2px rgba(36,107,158,.1);
 }
 
-.hidden{
-  display:none;
-}
+.hidden{display:none}
 
 .hint{
   font-size:11px;
@@ -150,22 +145,12 @@ button{
   cursor:pointer;
 }
 
-button:hover{
-  opacity:.92;
-}
-
-.primary{
-  background:var(--blue);
-  color:#fff;
-}
-
-.secondary{
-  background:#eef2f5;
-  color:var(--text);
-}
+button:hover{opacity:.92}
+.primary{background:var(--blue);color:#fff}
+.secondary{background:#eef2f5;color:var(--text)}
 
 .result{
-  min-height:470px;
+  min-height:560px;
 }
 
 .empty{
@@ -189,6 +174,16 @@ button:hover{
   margin-bottom:12px;
   background:var(--greenbg);
   color:var(--green);
+}
+
+.icon.warn{
+  background:var(--amberbg);
+  color:var(--amber);
+}
+
+.icon.stop{
+  background:var(--redbg);
+  color:var(--red);
 }
 
 .badge{
@@ -231,9 +226,13 @@ button:hover{
   color:#765000;
 }
 
-.advisors{
-  margin-top:14px;
+.panel.red{
+  background:var(--redbg);
+  border-left-color:#c45a5a;
+  color:#7d2929;
 }
+
+.advisors{margin-top:14px}
 
 .advisor-row{
   padding:8px 0;
@@ -241,15 +240,8 @@ button:hover{
   font-size:12px;
 }
 
-.advisor-row:last-child{
-  border:0;
-}
-
-.advisor-row strong{
-  display:block;
-  color:var(--navy);
-  font-size:13px;
-}
+.advisor-row:last-child{border:0}
+.advisor-row strong{display:block;color:var(--navy);font-size:13px}
 
 .rules{
   margin-top:20px;
@@ -259,35 +251,70 @@ button:hover{
   padding:20px;
 }
 
-.rules h3{
-  margin:0 0 6px;
-  color:var(--navy);
-}
+.rules h3{margin:0 0 6px;color:var(--navy)}
+.rules > p{font-size:12px;color:var(--muted);margin:0 0 13px}
 
-.rules p{
-  font-size:12px;
-  color:var(--muted);
-  margin:0 0 13px;
-}
-
-.rulegrid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
-.rulebox{
+.accordion{
   border:1px solid var(--border);
-  border-radius:8px;
-  padding:11px;
-  font-size:11px;
-  line-height:1.45;
+  border-radius:9px;
+  overflow:hidden;
 }
 
-.rulebox strong{
-  display:block;
+.accordion details{
+  border-bottom:1px solid var(--border);
+  background:#fff;
+}
+
+.accordion details:last-child{border-bottom:0}
+
+.accordion summary{
+  cursor:pointer;
+  list-style:none;
+  padding:14px 15px;
+  font-size:13px;
+  font-weight:700;
   color:var(--navy);
-  margin-bottom:4px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:#fafcfd;
+}
+
+.accordion summary::-webkit-details-marker{display:none}
+
+.accordion summary::after{
+  content:"+";
+  font-size:18px;
+  color:var(--blue);
+  font-weight:400;
+}
+
+.accordion details[open] summary::after{content:"−"}
+
+.accordion .content{
+  padding:0 15px 15px;
+  font-size:12px;
+  line-height:1.55;
+  color:#526170;
+}
+
+.accordion ul{margin:7px 0 0;padding-left:19px}
+.accordion li{margin:5px 0}
+
+.legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:12px 0 14px;
+}
+
+.legend span{
+  padding:5px 8px;
+  border-radius:16px;
+  background:#eef4f8;
+  color:var(--blue);
+  font-size:10px;
+  font-weight:700;
 }
 
 .footer{
@@ -297,378 +324,238 @@ button:hover{
 }
 
 @media(max-width:900px){
-
-  .grid{
-    grid-template-columns:1fr;
-  }
-
-  .rulegrid{
-    grid-template-columns:1fr;
-  }
-
-  .fields{
-    grid-template-columns:1fr;
-  }
-
-  .full{
-    grid-column:auto;
-  }
-
+  .grid{grid-template-columns:1fr}
+  .fields{grid-template-columns:1fr}
+  .full{grid-column:auto}
+  .topbar{flex-direction:column;align-items:flex-start}
 }
-
 </style>
 </head>
 
 <body>
 
 <div class="topbar">
-
-  <h1>
-    UFV Front Desk Advisor Routing Assistant
-  </h1>
-
-  <p>
-    Program routing based on student status,
-    program destination and completed credits
-  </p>
-
+  <div class="topbar-text">
+    <h1>UFV Front Desk Advisor Routing Assistant</h1>
+    <p>Route students using status, current program, intended program, enrollment status and completed credits.</p>
+  </div>
+  <a class="back-link" href="index.html">&larr; Back to Home</a>
 </div>
-
 
 <div class="wrap">
 
 <div class="grid">
 
-
-<!-- =====================================================
-     STUDENT INTAKE
-     ===================================================== -->
-
 <section class="card">
 
-<h2>
-  Student Intake
-</h2>
-
+<h2>Student Intake</h2>
 <p class="intro">
-  Enter the student's status, program information and
-  completed credits to determine the appropriate advising
-  pathway.
+  Complete the fields below. The routing result is designed to tell the Admin/Front Desk team
+  where the student should be booked or referred.
 </p>
 
-
-<!-- =====================================================
-     STUDENT STATUS
-     ===================================================== -->
-
-<div class="section">
-  Student Status
-</div>
+<div class="section">Student Status</div>
 
 <div class="fields">
-
   <div class="full">
-
-    <label for="status">
-      Student status
-    </label>
-
-    <select
-      id="status"
-      onchange="statusChanged()"
-    >
-
-      <option value="">
-        Select student status...
-      </option>
-
-      <option value="current">
-        Current student
-      </option>
-
-      <option value="returning">
-        Returning student
-      </option>
-
-      <option value="future">
-        Future / not yet enrolled
-      </option>
-
+    <label for="status">Student status</label>
+    <select id="status" onchange="statusChanged()">
+      <option value="">Select student status...</option>
+      <option value="current">Current student</option>
+      <option value="returning">Returning student</option>
+      <option value="future">Future student</option>
     </select>
-
+    <div class="hint">Use Future student for students who are not yet enrolled.</div>
   </div>
-
 </div>
 
-
-<!-- =====================================================
-     PROGRAM INFORMATION
-     ===================================================== -->
-
-<div class="section">
-  Program Information
-</div>
+<div class="section">Program Information</div>
 
 <div class="fields">
-
 
   <div>
-
-    <label for="current">
-      Current program
-    </label>
-
+    <label for="current">Current program</label>
     <select id="current"></select>
-
   </div>
-
 
   <div>
-
-    <label for="intent">
-      Intended program
-    </label>
-
-    <select
-      id="intent"
-      onchange="intentChanged()"
-    >
-
-      <option value="">
-        Select...
-      </option>
-
-      <option value="same">
-        Same as current program
-      </option>
-
-      <option value="new">
-        Switch Program
-      </option>
-
+    <label for="intent">Intended program</label>
+    <select id="intent" onchange="intentChanged()">
+      <option value="">Select...</option>
+      <option value="same">Same as current program</option>
+      <option value="new">Switch Program</option>
     </select>
-
   </div>
 
+  <div id="targetWrap" class="full hidden">
+    <label for="target">New / intended program</label>
+    <select id="target" onchange="targetChanged()"></select>
+    <div class="hint">Select the destination program, or choose “Unsure to what program”.</div>
+  </div>
 
-  <div
-    id="targetWrap"
-    class="full hidden"
-  >
-
-    <label for="target">
-      New / intended program
-    </label>
-
-    <select id="target"></select>
-
+  <!-- NEW: enrollment status appears immediately after intended program -->
+  <div id="enrollmentWrap" class="full hidden">
+    <label for="enrollment">Enrollment status for new / intended program</label>
+    <select id="enrollment">
+      <option value="">Select...</option>
+      <option value="enrolled">Enrolled</option>
+      <option value="not-enrolled">Not enrolled</option>
+    </select>
     <div class="hint">
-      Select the program the student wants to enter.
+      Use this when the student is switching/intending to enter a program but has not yet enrolled in it.
     </div>
-
   </div>
-
 
   <div class="full">
-
-    <label for="credits">
-      Completed credits
-    </label>
-
-    <input
-      id="credits"
-      type="number"
-      min="0"
-      placeholder="e.g. 24"
-    >
-
-    <div class="hint">
-      Enter the student's total completed credits.
-    </div>
-
+    <label for="credits">Completed credits</label>
+    <input id="credits" type="number" min="0" placeholder="e.g. 24">
+    <div class="hint">Enter the student's total completed credits.</div>
   </div>
 
-
 </div>
-
-
-<!-- =====================================================
-     ACTIONS
-     ===================================================== -->
 
 <div class="actions">
-
-  <button
-    class="primary"
-    onclick="route()"
-  >
-    Find Advisor
-  </button>
-
-  <button
-    class="secondary"
-    onclick="resetApp()"
-  >
-    Clear
-  </button>
-
+  <button class="primary" onclick="route()">Find Advisor</button>
+  <button class="secondary" onclick="resetApp()">Clear</button>
 </div>
 
 </section>
 
-
-<!-- =====================================================
-     RESULT
-     ===================================================== -->
-
-<aside
-  class="card result empty"
-  id="result"
->
-
-  <div
-    style="font-size:34px;margin-bottom:8px"
-  >
-    ↗
-  </div>
-
-  <strong
-    style="color:var(--navy);font-size:18px"
-  >
-    Recommended route
-  </strong>
-
-  <p>
-    Enter the student's information and select
-    <b>Find Advisor</b>.
-  </p>
-
+<aside class="card result empty" id="result">
+  <div style="font-size:34px;margin-bottom:8px">↗</div>
+  <strong style="color:var(--navy);font-size:18px">Recommended route</strong>
+  <p>Enter the student's information and select <b>Find Advisor</b>.</p>
 </aside>
 
 </div>
 
-
-<!-- =====================================================
-     ROUTING RULES
-     ===================================================== -->
-
 <section class="rules">
 
-<h3>
-  Routing Rules
-</h3>
-
+<h3>Routing Rules & Quick Reference</h3>
 <p>
-  The routing engine uses the student's status,
-  current program, intended program and completed
-  credits. Appointment availability is not assumed.
+  Use the sections below for quick reference. Open only the rule set you need.
 </p>
 
-
-<div class="rulegrid">
-
-
-<div class="rulebox">
-
-<strong>
-  Arts / Science 0–30
-</strong>
-
-Students in the applicable Arts and Science/Computer
-programs with 0–30 completed credits → QS.
-
+<div class="legend">
+  <span>QS = Qualifying Studies</span>
+  <span>FSO = Future Students</span>
+  <span>AAC = Academic Advising Centre</span>
 </div>
 
+<div class="accordion">
 
-<div class="rulebox">
+<details>
+  <summary>Peer Advisors</summary>
+  <div class="content">
+    <b>Availability:</b> Fall and Winter semesters. Off for Summer semester.
+    <br><br>
 
-<strong>
-  Program Switching
-</strong>
+    <b>Peer Advisors can only meet with:</b>
+    <ul>
+      <li>Only BSc students for Science slots and BA students for Arts slots.</li>
+      <li>Only students with 60 credits or less.</li>
+      <li>Only students with a GPA of 2.0 or above.</li>
+      <li>Students must be alone.</li>
+    </ul>
 
-Students switching programs normally go to the advisor
-for the destination program, subject to QS exceptions.
+    <b>Main duties:</b> Basic inquiries such as course planning, declaring a major/minor,
+    using myUFV and myGradplan.
+  </div>
+</details>
+
+<details>
+  <summary>General Routing Rules</summary>
+  <div class="content">
+    <ul>
+      <li>If switching from one program to another, students meet with an advisor for the
+          program they are switching to, with the QS exceptions noted below.</li>
+      <li>Students meet with the program advisor for their major.</li>
+      <li>If questions are about a minor in a program AAC does not advise for, such as
+          Business or Criminology, refer the student to that department.</li>
+    </ul>
+
+    <br>
+
+    <b>Modern Languages:</b> Students in Modern Languages see Arts unless they are in another
+    program and taking a MOLA certificate concurrently. In that case, their current program
+    advisor advises them.
+
+    <br><br>
+
+    <b>QS / switching exceptions:</b>
+    <ul>
+      <li>Students with 0–30 credits in BA, AA, LA, BSc or ASc → QS.</li>
+      <li>Students switching to Nursing/Health Sciences who are not enrolled → QS.</li>
+      <li>Students switching to Nursing Track → QS.</li>
+      <li>Students switching to Trades → QS.</li>
+      <li>Students wanting to switch programs but unsure to what program → QS.</li>
+      <li>Students in ABE switching to an academic program → QS.</li>
+    </ul>
+
+    <b>Returning students:</b>
+    <ul>
+      <li>0–60 credits in a degree → QS.</li>
+      <li>0–30 credits in a diploma → QS.</li>
+      <li>Any credits when switching programs → QS.</li>
+      <li>60+ credits for a degree, or 30+ credits for a diploma, and not switching programs
+          → program advisor.</li>
+      <li>Returning students wanting to switch to Trades or Health Sciences → QS.</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Programs / Services AAC Does Not Advise</summary>
+  <div class="content">
+    <ul>
+      <li><b>Upgrading (ABE):</b> unless for 100-level classes, then book with QS.</li>
+      <li><b>Business and Criminology:</b> refer to the appropriate department.</li>
+      <li><b>Trades:</b> if enrolled in a Trades program and seeking advice on that program,
+          refer to Trades School Coordinators.</li>
+      <li><b>Health Sciences:</b> enrolled students → Health Sciences.</li>
+      <li><b>School of Education:</b> enrolled students → School of Education. See the list of
+          requirements for when to meet with an SED advisor.</li>
+      <li><b>Continuing Education:</b> contact Continuing Education.</li>
+      <li><b>Future students:</b> refer to Future Students / FSO.</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Other Requests</summary>
+  <div class="content">
+    <ul>
+      <li><b>PLAR requests:</b> refer to UFV PLAR. Advisors can assist with informational questions.</li>
+      <li><b>TQS teacher credits:</b> requests go to the program their degree is with
+          (e.g., Arts → Arts).</li>
+      <li><b>Associate Communications Certificate declaration requests:</b> Arts advisors.</li>
+      <li><b>Prerequisite waivers:</b> go to individual departments, such as KIN. Refer the
+          student to the department coordinator.</li>
+      <li><b>Post-baccalaureate diplomas:</b> if graduate level / 400+, send to the department.
+          If unsure, ask advisors.</li>
+    </ul>
+  </div>
+</details>
 
 </div>
-
-
-<div class="rulebox">
-
-<strong>
-  Returning Students
-</strong>
-
-Returning students with lower credit totals may be
-routed to QS. Students with higher credits who are not
-switching normally return to their program advisor.
-
-</div>
-
-
-<div class="rulebox">
-
-<strong>
-  QS Exceptions
-</strong>
-
-Switching into Nursing, Nursing Track, Trades or an
-unknown destination → QS.
-
-</div>
-
-
-<div class="rulebox">
-
-<strong>
-  Special Programs
-</strong>
-
-Business, Criminology, Health Sciences, Trades,
-School of Education and Continuing Education follow
-their respective departments/services.
-
-</div>
-
-
-<div class="rulebox">
-
-<strong>
-  Program-Based Routing
-</strong>
-
-Arts, Science/Computer Information Systems, BKIN,
-Fine Arts and Social Work/CYC are routed according
-to their program group.
-
-</div>
-
-
-</div>
-
 
 <div class="footer">
-
-Prototype only. Routing rules should be validated by
-AAC/advising leadership before being used for real
-student routing.
-
+  Prototype only. Routing rules should be validated by AAC/advising leadership before being used
+  for real student routing. Advisor availability and appointment slots are not automatically checked.
 </div>
 
 </section>
 
 </div>
 
-
 <script>
-
 /* =========================================================
-   UFV PROGRAM DATA
+   PROGRAM DATA
    ========================================================= */
 
 const programGroups = {
 
   "Science/Computer Information Systems": [
-
     "Information Systems",
     "Agriculture",
     "Engineering Transfer",
@@ -677,364 +564,228 @@ const programGroups = {
     "DAC/BRCP",
     "Engineering Common Core (ECC)",
     "PB Data Analysis"
-
   ],
 
-
   "Arts": [
-
     "BA",
     "AA",
     "LA",
     "BIS/GEN",
-    "Global Development Studies (GDS)"
-
+    "Global Development Studies (GDS)",
+    "Modern Languages",
+    "Indigenous Studies"
   ],
-
 
   "Bachelor of Kinesiology": [
-
     "BKIN"
-
   ],
 
-
   "Qualifying Studies": [
-
     "QS",
     "Arts/Science 0–30",
     "General Interest",
     "Concurrent Studies"
-
   ],
 
-
   "Fine Arts": [
-
     "BFA",
     "BMA",
     "Visual Arts Diploma",
     "Graphic Design",
     "Theatre Major"
-
   ],
 
-
   "Social Work / Child and Youth Care": [
-
     "BSW",
     "SSWD",
     "CYC",
     "Ad ED/TESL",
     "LIBIT",
     "BA AE"
-
   ],
-
-
-  /* Additional categories required for routing */
 
   "Business / Criminology (not AAC)": [
-
     "Business",
     "Criminology"
-
   ],
-
 
   "ABE / Upgrading": [
-
     "ABE / Upgrading"
-
   ],
-
 
   "Trades": [
-
     "Trades"
-
   ],
 
-
   "Health Sciences": [
-
     "Health Sciences",
     "Nursing",
     "Nursing Track"
-
   ],
-
 
   "School of Education": [
-
     "School of Education"
-
   ],
-
 
   "Continuing Education": [
-
     "Continuing Education"
-
   ],
 
-
   "Other": [
-
     "Other / Undecided"
-
   ]
-
 };
 
+/* Special target choice requested during testing */
+const UNSURE_PROGRAM = "Unsure to what program";
 
-/* =========================================================
-   CREATE PROGRAM LOOKUP
-   ========================================================= */
-
+/* Create program lookup */
 const programs = [];
 
-Object.entries(programGroups).forEach(
-  ([group,list]) => {
-
-    list.forEach(program => {
-
-      programs.push({
-        program:program,
-        group:group
-      });
-
-    });
-
-  }
-);
-
+Object.entries(programGroups).forEach(([groupName, list]) => {
+  list.forEach(program => {
+    programs.push({program, group:groupName});
+  });
+});
 
 /* =========================================================
-   FILL PROGRAM DROPDOWNS
+   FILL DROPDOWNS
    ========================================================= */
 
-function fillPrograms(){
+function addProgramOptions(select, includeUnsure=false){
 
-  const current =
-    document.getElementById("current");
+  select.innerHTML = "";
 
-  const target =
-    document.getElementById("target");
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = select.id === "current"
+    ? "Select current program..."
+    : "Select intended program...";
+  select.appendChild(placeholder);
 
+  Object.entries(programGroups).forEach(([groupName,list]) => {
 
-  /* CURRENT PROGRAM */
+    const optgroup = document.createElement("optgroup");
+    optgroup.label = groupName;
 
-  current.innerHTML = "";
+    list.forEach(program => {
+      const option = document.createElement("option");
+      option.value = program;
+      option.textContent = program;
+      optgroup.appendChild(option);
+    });
 
-  const currentPlaceholder =
-    document.createElement("option");
+    select.appendChild(optgroup);
+  });
 
-  currentPlaceholder.value = "";
-
-  currentPlaceholder.textContent =
-    "Select current program...";
-
-  current.appendChild(
-    currentPlaceholder
-  );
-
-
-  Object.entries(programGroups).forEach(
-    ([group,list]) => {
-
-      const optgroup =
-        document.createElement("optgroup");
-
-      optgroup.label = group;
-
-
-      list.forEach(program => {
-
-        const option =
-          document.createElement("option");
-
-        option.value = program;
-
-        option.textContent = program;
-
-        optgroup.appendChild(option);
-
-      });
-
-
-      current.appendChild(optgroup);
-
-    }
-  );
-
-
-  /* INTENDED PROGRAM */
-
-  target.innerHTML = "";
-
-  const targetPlaceholder =
-    document.createElement("option");
-
-  targetPlaceholder.value = "";
-
-  targetPlaceholder.textContent =
-    "Select intended program...";
-
-  target.appendChild(
-    targetPlaceholder
-  );
-
-
-  Object.entries(programGroups).forEach(
-    ([group,list]) => {
-
-      const optgroup =
-        document.createElement("optgroup");
-
-      optgroup.label = group;
-
-
-      list.forEach(program => {
-
-        const option =
-          document.createElement("option");
-
-        option.value = program;
-
-        option.textContent = program;
-
-        optgroup.appendChild(option);
-
-      });
-
-
-      target.appendChild(optgroup);
-
-    }
-  );
-
+  if(includeUnsure){
+    const option = document.createElement("option");
+    option.value = UNSURE_PROGRAM;
+    option.textContent = UNSURE_PROGRAM;
+    select.appendChild(option);
+  }
 }
 
+function fillPrograms(){
+  addProgramOptions(document.getElementById("current"), false);
+  addProgramOptions(document.getElementById("target"), true);
+}
 
-document.addEventListener(
-  "DOMContentLoaded",
-  fillPrograms
-);
-
+document.addEventListener("DOMContentLoaded", fillPrograms);
 
 /* =========================================================
-   INTENT CHANGE
+   INTERFACE CHANGES
    ========================================================= */
 
 function intentChanged(){
 
-  const isNew =
-    document.getElementById("intent").value === "new";
+  const isNew = document.getElementById("intent").value === "new";
 
+  document.getElementById("targetWrap")
+    .classList.toggle("hidden", !isNew);
 
-  document
-    .getElementById("targetWrap")
-    .classList
-    .toggle(
-      "hidden",
-      !isNew
-    );
+  document.getElementById("enrollmentWrap")
+    .classList.toggle("hidden", !isNew);
 
+  if(!isNew){
+    document.getElementById("target").value = "";
+    document.getElementById("enrollment").value = "";
+  }
 }
 
+function targetChanged(){
 
-/* =========================================================
-   STATUS CHANGE
-   ========================================================= */
+  /* Enrollment field remains available for all switch-program scenarios.
+     It is intentionally optional because some cases do not require it. */
+}
 
 function statusChanged(){
 
+  const status = document.getElementById("status").value;
+
   /*
-    Reserved for future status-specific
-    interface changes.
+    Future students do not need a current program in practice,
+    but the form keeps the field available for consistency.
   */
 
+  if(status === "future"){
+    document.getElementById("intent").value = "";
+    document.getElementById("target").value = "";
+    document.getElementById("enrollment").value = "";
+    document.getElementById("targetWrap").classList.add("hidden");
+    document.getElementById("enrollmentWrap").classList.add("hidden");
+  }
 }
 
-
 /* =========================================================
-   GET PROGRAM GROUP
+   HELPERS
    ========================================================= */
 
 function group(program){
 
-  const match =
-    programs.find(
-      item =>
-        item.program === program
-    );
+  if(program === UNSURE_PROGRAM) return "Qualifying Studies";
 
+  const match = programs.find(item => item.program === program);
 
-  return match
-    ? match.group
-    : "Other";
-
+  return match ? match.group : "Other";
 }
-
-
-/* =========================================================
-   ADVISOR POOLS
-   ========================================================= */
 
 function advisorList(groupName){
 
   const lists = {
 
-
     "Science/Computer Information Systems":[
-
       "Kristen Switzer",
       "Rilla Apostolakis",
       "Adrian Bontuyan",
       "Rhonda Colwell (leave)"
-
     ],
 
-
     "Arts":[
-
       "Kirsten Trustham",
       "Shannon Draney",
       "Vanessa Krahn",
       "Eve Mix",
-      "Paula Funk (20%)"
-
+      "Paula Funk (20%) — BA, AA, LA only"
     ],
-
 
     "Bachelor of Kinesiology":[
-
       "Karla Deschenes (CHWK CEP; Abby every second Thursday)",
       "Kathryn Garcia (20% KIN)"
-
     ],
 
-
     "Fine Arts":[
-
       "Paula Funk",
       "Eve Mix (BMA 20%)",
       "Vanessa Krahn (BFA 20%)"
-
     ],
-
 
     "Social Work / Child and Youth Care":[
-
       "Deby Basra",
       "Holly Zonneveld (50%)"
-
     ],
 
-
     "Qualifying Studies":[
-
       "Karen Cooper (CHWK CEP)",
       "Kathryn Garcia (CHWK CEP)",
       "Holly Zonneveld (50%)",
@@ -1043,133 +794,71 @@ function advisorList(groupName){
       "Kate Doublestein",
       "Shriram Gaikwad (TBD)",
       "Valerie Molinelli (TBD)"
-
     ]
-
   };
 
-
   return lists[groupName] || [];
-
 }
-
 
 /* =========================================================
-   RENDER RESULT
+   RESULT RENDERING
    ========================================================= */
 
-function render(
-  advisor,
-  reason,
-  rule,
-  groupName,
-  warning="",
-  slot=""
-){
+function render(advisor, reason, rule, groupName, warning="", slot="", type="success"){
 
-  const result =
-    document.getElementById("result");
+  const result = document.getElementById("result");
+  const list = advisorList(groupName);
 
-  const list =
-    advisorList(groupName);
+  result.className = "card result";
 
+  let iconClass = "";
+  let iconText = "✓";
 
-  result.className =
-    "card result";
+  if(type === "warning"){
+    iconClass = "warn";
+    iconText = "!";
+  }
 
+  if(type === "stop"){
+    iconClass = "stop";
+    iconText = "→";
+  }
 
   result.innerHTML = `
+    <div class="icon ${iconClass}">${iconText}</div>
 
-    <div class="icon">
-      ✓
-    </div>
+    <span class="badge">${type === "stop" ? "REFER / DO NOT BOOK" : "RECOMMENDED ROUTE"}</span>
 
-    <span class="badge">
-      RECOMMENDED ROUTE
-    </span>
+    <div class="advisor">${advisor}</div>
 
-    <div class="advisor">
-      ${advisor}
-    </div>
-
-    <div class="reason">
-      ${reason}
-    </div>
+    <div class="reason">${reason}</div>
 
     <div class="panel">
-      <b>Routing rule:</b>
-      ${rule}
+      <b>Routing rule:</b> ${rule}
     </div>
 
+    ${warning ? `
+      <div class="panel amber">
+        <b>Front desk note:</b> ${warning}
+      </div>
+    ` : ""}
 
-    ${
-      warning
-      ? `
-        <div class="panel amber">
-          <b>Front desk note:</b>
-          ${warning}
-        </div>
-      `
-      : ""
-    }
+    ${slot ? `
+      <div class="panel">
+        <b>Booking note:</b> ${slot}
+      </div>
+    ` : ""}
 
-
-    ${
-      slot
-      ? `
-        <div class="panel">
-          <b>Booking note:</b>
-          ${slot}
-        </div>
-      `
-      : ""
-    }
-
-
-    ${
-      list.length
-      ? `
-
-        <div class="advisors">
-
-          <b
-            style="
-              font-size:12px;
-              color:var(--navy)
-            "
-          >
-            Advisor pool
-          </b>
-
-
-          ${
-            list
-              .map(
-                name => `
-
-                  <div class="advisor-row">
-
-                    <strong>
-                      ${name}
-                    </strong>
-
-                  </div>
-
-                `
-              )
-              .join("")
-          }
-
-        </div>
-
-      `
-      : ""
-    }
-
+    ${list.length ? `
+      <div class="advisors">
+        <b style="font-size:12px;color:var(--navy)">Advisor pool</b>
+        ${list.map(name => `
+          <div class="advisor-row"><strong>${name}</strong></div>
+        `).join("")}
+      </div>
+    ` : ""}
   `;
-
 }
-
 
 /* =========================================================
    MAIN ROUTING ENGINE
@@ -1177,342 +866,177 @@ function render(
 
 function route(){
 
-  const status =
-    document.getElementById("status").value;
+  const status = document.getElementById("status").value;
+  const current = document.getElementById("current").value;
+  const intent = document.getElementById("intent").value;
+  const target = document.getElementById("target").value;
+  const enrollment = document.getElementById("enrollment").value;
+  const creditsValue = document.getElementById("credits").value;
 
-  const current =
-    document.getElementById("current").value;
-
-  const intent =
-    document.getElementById("intent").value;
-
-  const target =
-    document.getElementById("target").value;
-
-  const credits =
-    document.getElementById("credits").value;
-
-
-  /* =====================================================
-     REQUIRED INFORMATION
-     ===================================================== */
-
-  if(
-
-    !status ||
-    !current ||
-    !intent ||
-    credits === "" ||
-    (
-      intent === "new" &&
-      !target
-    )
-
-  ){
-
-    const result =
-      document.getElementById("result");
-
-
-    result.className =
-      "card result";
-
-
-    result.innerHTML = `
-
-      <div
-        class="icon"
-        style="
-          background:var(--amberbg);
-          color:var(--amber)
-        "
-      >
-        !
-      </div>
-
-
-      <div
-        class="advisor"
-        style="font-size:22px"
-      >
-        More information needed
-      </div>
-
-
-      <div class="reason">
-
-        Please complete:
-
-        <br><br>
-
-        • Student status<br>
-        • Current program<br>
-        • Intended program<br>
-        • Completed credits
-
-      </div>
-
-    `;
-
-    return;
-  }
-
-
-  const cr =
-    Number(credits);
-
-
-  const destination =
-    intent === "new"
-      ? target
-      : current;
-
-
-  const currentGroup =
-    group(current);
-
-
-  const destinationGroup =
-    group(destination);
-
-
-  /* =====================================================
-     FUTURE STUDENTS
-     ===================================================== */
-
+  /*
+    FUTURE STUDENTS:
+    The user's requested wording is "Future student" — no "not yet enrolled"
+    appears beside the status option.
+  */
   if(status === "future"){
 
     render(
-
-      "Future Student Services",
-
-      "The student is not yet enrolled.",
-
-      "Future students are referred to Future Students / FSO rather than current-student AAC advising.",
-
+      "Future Students / FSO",
+      "The student is a future student rather than a current or returning student.",
+      "Future students → Future Students / FSO.",
       "",
-
-      "Do not book as a current-student advising appointment."
-
+      "Do not book as a current-student AAC advising appointment.",
+      "",
+      "stop"
     );
 
     return;
   }
 
+  /*
+    Required fields for current/returning students.
+  */
+  if(!status || !current || !intent || creditsValue === "" ||
+     (intent === "new" && !target)){
+
+    showMissing();
+
+    return;
+  }
+
+  const cr = Number(creditsValue);
+  const destination = intent === "new" ? target : current;
+
+  const currentGroup = group(current);
+  const destinationGroup = group(destination);
+
+  /* =====================================================
+     UNSURE TO WHAT PROGRAM
+     ===================================================== */
+
+  if(intent === "new" && target === UNSURE_PROGRAM){
+
+    render(
+      "QS",
+      "The student wants to switch programs but is unsure what program they want to enter.",
+      "Students wanting to switch programs but unsure of the destination → QS.",
+      "Qualifying Studies",
+      "This is a QS exception to normal destination-program routing."
+    );
+
+    return;
+  }
 
   /* =====================================================
      BUSINESS / CRIMINOLOGY
      ===================================================== */
 
-  if(
+  if(current === "Business" || current === "Criminology"){
 
-    current === "Business" ||
-    current === "Criminology"
+    if(intent === "new"){
 
-  ){
+      /*
+        If they are switching out, continue to destination routing.
+        This prevents the current program from incorrectly overriding
+        the intended program.
+      */
 
-    render(
+    }else{
 
-      "Business / Criminology Department",
+      render(
+        "Business / Criminology Department",
+        "Business and Criminology are outside AAC advising.",
+        "Business / Criminology → appropriate department.",
+        "",
+        "Refer the student to the appropriate department.",
+        "",
+        "stop"
+      );
 
-      "Business and Criminology are outside AAC advising.",
-
-      "Business / Criminology → appropriate department.",
-
-      "",
-
-      "Refer the student to the appropriate department."
-
-    );
-
-    return;
+      return;
+    }
   }
-
 
   /* =====================================================
      TRADES
      ===================================================== */
 
-  if(current === "Trades"){
-
-    /*
-      Exception:
-      If switching INTO Trades, QS handles it.
-    */
-
-    if(
-      intent === "new" &&
-      target === "Trades"
-    ){
-
-      render(
-
-        "QS",
-
-        "The student is switching into Trades.",
-
-        "Switching into Trades → QS.",
-
-        "Qualifying Studies",
-
-        "This is a QS exception to normal destination-program routing."
-
-      );
-
-      return;
-    }
-
+  if(current === "Trades" && intent !== "new"){
 
     render(
-
       "Trades School Coordinator",
-
       "The student is currently enrolled in Trades.",
-
-      "Enrolled Trades students → Trades School Coordinator.",
-
+      "Enrolled Trades students seeking advice on their Trades program → Trades School Coordinator.",
       "",
-
-      "Refer to the Trades School Coordinator."
-
+      "Refer the student to the Trades School Coordinator.",
+      "",
+      "stop"
     );
 
     return;
   }
-
 
   /* =====================================================
      HEALTH SCIENCES / NURSING
      ===================================================== */
 
   if(
-
-    current === "Health Sciences" ||
-    current === "Nursing" ||
-    current === "Nursing Track"
-
+    (current === "Health Sciences" ||
+     current === "Nursing" ||
+     current === "Nursing Track") &&
+    intent !== "new"
   ){
 
-    /*
-      Exception:
-      Switching OUT of Health Sciences/Nursing
-      follows the destination program.
-    */
+    render(
+      "Health Sciences",
+      "The student is currently enrolled in Health Sciences/Nursing.",
+      "Enrolled Health Sciences students → Health Sciences advising.",
+      "",
+      "Refer to Health Sciences advising.",
+      "",
+      "stop"
+    );
 
-    if(intent === "new"){
-
-      /*
-        If destination is Nursing/Health Sciences,
-        QS exception applies.
-      */
-
-      if(
-
-        target === "Nursing" ||
-        target === "Nursing Track" ||
-        target === "Health Sciences"
-
-      ){
-
-        render(
-
-          "QS",
-
-          "The student is entering a Nursing/Health Sciences destination.",
-
-          "Switching into Nursing/Health Sciences → QS.",
-
-          "Qualifying Studies"
-
-        );
-
-        return;
-      }
-
-      /*
-        Otherwise continue to destination routing.
-      */
-
-    }
-    else{
-
-      render(
-
-        "Health Sciences",
-
-        "The student is currently enrolled in Health Sciences/Nursing.",
-
-        "Enrolled Health Sciences/Nursing students → Health Sciences advising.",
-
-        "",
-
-        "Refer to Health Sciences advising."
-
-      );
-
-      return;
-    }
-
+    return;
   }
-
 
   /* =====================================================
      SCHOOL OF EDUCATION
      ===================================================== */
 
-  if(
-    current === "School of Education"
-  ){
+  if(current === "School of Education" && intent !== "new"){
 
-    if(intent !== "new"){
+    render(
+      "School of Education",
+      "The student is currently enrolled in the School of Education.",
+      "Enrolled School of Education students → School of Education advising.",
+      "",
+      "Refer to School of Education. See the School of Education requirements for when an SED advisor is needed.",
+      "",
+      "stop"
+    );
 
-      render(
-
-        "School of Education",
-
-        "The student is currently enrolled in the School of Education.",
-
-        "Enrolled School of Education students → School of Education advising.",
-
-        "",
-
-        "Refer to School of Education advising."
-
-      );
-
-      return;
-    }
-
+    return;
   }
-
 
   /* =====================================================
      CONTINUING EDUCATION
      ===================================================== */
 
-  if(
-    current === "Continuing Education"
-  ){
+  if(current === "Continuing Education" && intent !== "new"){
 
-    if(intent !== "new"){
+    render(
+      "Continuing Education",
+      "The student's courses are through Continuing Education.",
+      "Continuing Education courses → Continuing Education.",
+      "",
+      "Refer to Continuing Education.",
+      "",
+      "stop"
+    );
 
-      render(
-
-        "Continuing Education",
-
-        "The student's courses are through Continuing Education.",
-
-        "Continuing Education → Continuing Education.",
-
-        ""
-
-      );
-
-      return;
-    }
-
+    return;
   }
-
 
   /* =====================================================
      PROGRAM SWITCHING — QS EXCEPTIONS
@@ -1520,506 +1044,507 @@ function route(){
 
   if(intent === "new"){
 
+    /*
+      Nursing / Health Sciences:
+      The notes specifically say QS handles students switching
+      to Nursing/Health Sciences when not enrolled yet.
+    */
     if(
-
       target === "Nursing" ||
       target === "Nursing Track" ||
-      target === "Trades"
-
+      target === "Health Sciences"
     ){
 
+      if(enrollment === "not-enrolled" || enrollment === ""){
+
+        render(
+          "QS",
+          "The student is switching/intending to enter Nursing or Health Sciences and is not enrolled in the destination program.",
+          "Switching to Nursing/Health Sciences (not enrolled) → QS.",
+          "Qualifying Studies",
+          "Use QS for this exception. If the student is already enrolled in Health Sciences, route to Health Sciences instead."
+        );
+
+        return;
+      }
+
+      if(enrollment === "enrolled"){
+
+        render(
+          "Health Sciences",
+          "The student is already enrolled in the Health Sciences/Nursing destination.",
+          "Enrolled Health Sciences/Nursing students → Health Sciences advising.",
+          "",
+          "Do not use the QS switching exception when the student is already enrolled.",
+          "",
+          "stop"
+        );
+
+        return;
+      }
+    }
+
+    /*
+      Trades:
+      Switching into Trades → QS.
+    */
+    if(target === "Trades"){
+
       render(
-
         "QS",
-
-        "The student is switching into a destination covered by the QS exception pathway.",
-
-        "Switching into Nursing, Nursing Track or Trades → QS.",
-
+        "The student is switching into Trades.",
+        "Returning/current students switching into Trades → QS.",
         "Qualifying Studies",
-
-        "This is an exception to normal destination-program routing."
-
+        "This is a QS exception to normal destination-program routing."
       );
 
       return;
     }
 
-
-    if(
-      target === "Other / Undecided"
-    ){
-
-      render(
-
-        "QS",
-
-        "The student has not identified a specific destination program.",
-
-        "Students unsure of their intended program → QS.",
-
-        "Qualifying Studies"
-
-      );
-
-      return;
-    }
-
-
-    if(
-      current === "ABE / Upgrading" &&
-      target !== "ABE / Upgrading"
-    ){
+    /*
+      ABE → academic program.
+    */
+    if(current === "ABE / Upgrading" && target !== "ABE / Upgrading"){
 
       render(
-
         "QS",
-
         "The student is moving from ABE/Upgrading into an academic program.",
-
         "ABE/Upgrading students switching to an academic program → QS.",
-
         "Qualifying Studies"
-
       );
 
       return;
     }
 
+    /*
+      GENERAL INTEREST / BIS-GEN GLITCH FIX:
+      If current program is General Interest and the student switches
+      into BIS/GEN with 0 credits, do NOT route to Arts.
+      The 0–30/switching logic sends this case to QS.
+    */
+    if(
+      current === "General Interest" &&
+      target === "BIS/GEN" &&
+      cr <= 30
+    ){
+
+      render(
+        "QS",
+        "The student is currently in General Interest, is switching into BIS/GEN, and has 30 or fewer completed credits.",
+        "General Interest → BIS/GEN with 0–30 credits → QS; do not route directly to Arts.",
+        "Qualifying Studies",
+        "This rule specifically prevents the previous General Interest → BIS/GEN routing glitch."
+      );
+
+      return;
+    }
   }
 
-
   /* =====================================================
-     RETURNING STUDENT
+     RETURNING STUDENT RULES
      ===================================================== */
 
   if(status === "returning"){
 
     /*
-      Switching programs:
-      lower-credit returning students → QS.
+      Returning students:
+      0–60 credits in a degree, 0–30 in a diploma,
+      OR any credits when switching → QS.
     */
 
-    if(
-      intent === "new" &&
-      cr <= 60
-    ){
+    if(intent === "new"){
 
+      /*
+        The destination exceptions above are already handled.
+        For any program switch, the source notes say returning
+        students with any credits switching programs → QS.
+      */
       render(
-
         "QS",
-
-        "The returning student has 60 or fewer completed credits and is changing programs.",
-
-        "Returning students with 0–60 credits who are switching programs → QS.",
-
-        "Qualifying Studies"
-
+        "The returning student is changing programs.",
+        "Returning students switching programs → QS, regardless of completed credits.",
+        "Qualifying Studies",
+        "This returning-student rule takes priority over normal destination-program routing."
       );
 
       return;
     }
 
-
     /*
-      Returning student, not switching,
-      higher credits.
+      Not switching:
+      60+ degree credits → program advisor.
+      30+ diploma credits → program advisor.
+      The current implementation uses 60 as the degree threshold
+      for program groups that represent degree programs.
     */
+    if(intent === "same"){
 
-    if(
-      intent === "same" &&
-      cr > 60
-    ){
-
-      if(
-        currentGroup === "Arts"
-      ){
+      if(cr <= 60 &&
+         (currentGroup === "Arts" ||
+          currentGroup === "Science/Computer Information Systems")){
 
         render(
+          "QS",
+          "The returning student has 60 or fewer completed credits and is not changing programs.",
+          "Returning degree student with 0–60 credits → QS.",
+          "Qualifying Studies"
+        );
 
+        return;
+      }
+
+      if(currentGroup === "Arts"){
+
+        render(
           "Arts Advisor",
-
           "The returning student has more than 60 completed credits and is not changing programs.",
-
           "Returning degree student with 60+ credits and no program switch → program advisor.",
-
           "Arts"
-
         );
 
         return;
       }
 
-
-      if(
-        currentGroup ===
-        "Science/Computer Information Systems"
-      ){
+      if(currentGroup === "Science/Computer Information Systems"){
 
         render(
-
           "Science / Computer Information Systems Advisor",
-
           "The returning student has more than 60 completed credits and is not changing programs.",
-
           "Returning degree student with 60+ credits and no program switch → program advisor.",
-
-          "Science/Computer Information Systems"
-
+          "Science/Computer Information Systems",
+          "Use the specific program appointment slot where applicable."
         );
 
         return;
       }
-
     }
-
   }
 
+  /* =====================================================
+     CURRENT STUDENT — ARTS / SCIENCE 0–30
+     ===================================================== */
+
+  /*
+    The source notes define Arts and Science 0–30 as QS.
+    This must occur before normal Arts routing.
+  */
+  if(
+    status === "current" &&
+    intent === "same" &&
+    cr <= 30 &&
+    (
+      currentGroup === "Arts" ||
+      currentGroup === "Science/Computer Information Systems"
+    )
+  ){
+
+    render(
+      "QS",
+      "The student is in an Arts or Science/Computer program and has 30 or fewer completed credits.",
+      "Arts/Science 0–30 → QS.",
+      "Qualifying Studies"
+    );
+
+    return;
+  }
 
   /* =====================================================
-     PROGRAM SWITCHING — DESTINATION ROUTING
+     PROGRAM SWITCHING — NORMAL DESTINATION ROUTING
      ===================================================== */
 
   if(intent === "new"){
 
-    /* SCIENCE / COMPUTER */
-
-    if(
-      destinationGroup ===
-      "Science/Computer Information Systems"
-    ){
+    if(destinationGroup === "Science/Computer Information Systems"){
 
       render(
-
         "Science / Computer Information Systems Advisor",
-
         "The student is switching into a Science/Computer Information Systems program.",
-
         "Program switching normally routes to the advisor for the destination program.",
-
         "Science/Computer Information Systems",
-
-        "Use the specific program appointment slot where applicable."
-
+        "Use the specific program appointment slot for the student's program (for example, CIS, BES, etc.)."
       );
 
       return;
     }
 
-
-    /* ARTS */
-
-    if(
-      destinationGroup === "Arts"
-    ){
+    if(destinationGroup === "Arts"){
 
       render(
-
         "Arts Advisor",
-
         "The student is switching into an Arts program.",
-
         "Program switching normally routes to the advisor for the destination program.",
-
         "Arts"
-
       );
 
       return;
     }
 
-
-    /* KINESIOLOGY */
-
-    if(
-      destinationGroup ===
-      "Bachelor of Kinesiology"
-    ){
+    if(destinationGroup === "Bachelor of Kinesiology"){
 
       render(
-
         "Kinesiology Advisor",
-
         "The student is switching into the Bachelor of Kinesiology.",
-
         "BKIN destination → Kinesiology advising.",
-
         "Bachelor of Kinesiology",
-
         "",
-
         "Book in KIN appointments."
-
       );
 
       return;
     }
 
-
-    /* FINE ARTS */
-
-    if(
-      destinationGroup === "Fine Arts"
-    ){
+    if(destinationGroup === "Fine Arts"){
 
       render(
-
         "Fine Arts Advisor",
-
         "The student is switching into Fine Arts.",
-
         "Fine Arts destination → Fine Arts advising.",
-
         "Fine Arts",
-
         "",
-
         "Book in a Fine Arts slot."
-
       );
 
       return;
     }
 
-
-    /* SOCIAL WORK / CYC */
-
-    if(
-      destinationGroup ===
-      "Social Work / Child and Youth Care"
-    ){
+    if(destinationGroup === "Social Work / Child and Youth Care"){
 
       render(
-
         "Social Work / Child and Youth Care Advisor",
-
         "The student is switching into a Social Work / Child and Youth Care program.",
-
         "Destination program belongs to the Social Work / Child and Youth Care advising group.",
-
         "Social Work / Child and Youth Care"
-
       );
 
       return;
     }
 
-
-    /* QUALIFYING STUDIES */
-
-    if(
-      destinationGroup ===
-      "Qualifying Studies"
-    ){
+    if(destinationGroup === "Qualifying Studies"){
 
       render(
-
         "QS",
-
         "The intended program is within Qualifying Studies.",
-
         "Qualifying Studies programs → QS.",
-
         "Qualifying Studies"
-
       );
 
       return;
     }
 
+    if(destinationGroup === "Business / Criminology (not AAC)"){
+
+      render(
+        "Business / Criminology Department",
+        "The intended program is outside AAC advising.",
+        "Business / Criminology → appropriate department.",
+        "",
+        "Refer to the appropriate department.",
+        "",
+        "stop"
+      );
+
+      return;
+    }
+
+    if(destinationGroup === "Trades"){
+
+      render(
+        "QS",
+        "The student is switching into Trades.",
+        "Switching into Trades → QS.",
+        "Qualifying Studies"
+      );
+
+      return;
+    }
+
+    if(destinationGroup === "Health Sciences"){
+
+      render(
+        "QS",
+        "The student is intending to enter Health Sciences/Nursing but is not enrolled in the destination.",
+        "Switching to Nursing/Health Sciences (not enrolled) → QS.",
+        "Qualifying Studies"
+      );
+
+      return;
+    }
+
+    if(destinationGroup === "School of Education"){
+
+      render(
+        "School of Education",
+        "The student is switching into a School of Education program.",
+        "School of Education destination → School of Education.",
+        "",
+        "Refer to the School of Education for program-specific advising.",
+        "",
+        "stop"
+      );
+
+      return;
+    }
+
+    if(destinationGroup === "Continuing Education"){
+
+      render(
+        "Continuing Education",
+        "The intended course/program is through Continuing Education.",
+        "Continuing Education → Continuing Education.",
+        "",
+        "Refer to Continuing Education.",
+        "",
+        "stop"
+      );
+
+      return;
+    }
   }
 
-
   /* =====================================================
-     ARTS / SCIENCE 0–30
+     NORMAL CURRENT-STUDENT ROUTING
      ===================================================== */
 
-  if(
-
-    cr <= 30 &&
-
-    (
-
-      currentGroup === "Arts" ||
-      currentGroup ===
-      "Science/Computer Information Systems"
-
-    )
-
-  ){
+  if(currentGroup === "Science/Computer Information Systems"){
 
     render(
-
-      "QS",
-
-      "The student has 30 or fewer completed credits.",
-
-      "Arts/Science 0–30 → QS.",
-
-      "Qualifying Studies"
-
-    );
-
-    return;
-  }
-
-
-  /* =====================================================
-     NORMAL PROGRAM ROUTING
-     ===================================================== */
-
-  if(
-    currentGroup ===
-    "Science/Computer Information Systems"
-  ){
-
-    render(
-
       "Science / Computer Information Systems Advisor",
-
       "The student's program falls under Science/Computer Information Systems.",
-
       "Program-based routing → Science/Computer Information Systems advisor.",
-
       "Science/Computer Information Systems",
-
       "Use the specific program appointment slot where applicable."
-
     );
 
     return;
   }
 
-
-  if(
-    currentGroup === "Arts"
-  ){
+  if(currentGroup === "Arts"){
 
     render(
-
       "Arts Advisor",
-
       "The student's program falls under Arts.",
-
       "Program-based routing → Arts advisor.",
-
-      "Arts"
-
+      "Arts",
+      "Paula Funk supports 20% of Arts advising and only advises BA, AA, and LA students."
     );
 
     return;
   }
 
-
-  if(
-    currentGroup ===
-    "Bachelor of Kinesiology"
-  ){
+  if(currentGroup === "Bachelor of Kinesiology"){
 
     render(
-
       "Kinesiology Advisor",
-
       "The student is in the Bachelor of Kinesiology.",
-
       "Program-based routing → Kinesiology advisor.",
-
       "Bachelor of Kinesiology",
-
       "",
-
       "Book in KIN appointments."
-
     );
 
     return;
   }
 
-
-  if(
-    currentGroup === "Fine Arts"
-  ){
+  if(currentGroup === "Fine Arts"){
 
     render(
-
       "Fine Arts Advisor",
-
       "The student's program falls under Fine Arts.",
-
       "Program-based routing → Fine Arts advisor.",
-
       "Fine Arts",
-
       "",
-
       "Book in a Fine Arts slot."
-
     );
 
     return;
   }
 
-
-  if(
-    currentGroup ===
-    "Social Work / Child and Youth Care"
-  ){
+  if(currentGroup === "Social Work / Child and Youth Care"){
 
     render(
-
       "Social Work / Child and Youth Care Advisor",
-
       "The student's program falls under Social Work / Child and Youth Care.",
-
       "Program-based routing → Social Work / Child and Youth Care advisor.",
-
       "Social Work / Child and Youth Care"
-
     );
 
     return;
   }
 
-
-  if(
-    currentGroup ===
-    "Qualifying Studies"
-  ){
+  if(currentGroup === "Qualifying Studies"){
 
     render(
-
       "QS",
-
       "The student's program falls under Qualifying Studies.",
-
       "Qualifying Studies → QS.",
-
       "Qualifying Studies"
-
     );
 
     return;
   }
 
+  if(current === "ABE / Upgrading"){
+
+    render(
+      "QS / ABE guidance",
+      "ABE/Upgrading is not normally advised by AAC.",
+      "ABE/Upgrading → appropriate ABE guidance; 100-level academic class questions can be booked with QS.",
+      "Qualifying Studies",
+      "If the request is specifically about 100-level classes, QS can assist. Otherwise refer to the appropriate ABE service.",
+      "",
+      "warning"
+    );
+
+    return;
+  }
 
   /* =====================================================
      FALLBACK
      ===================================================== */
 
   render(
-
     "General / Program Advisor",
-
     "No more specific routing rule matched the student's information.",
-
-    "Fallback → appropriate program advisor.",
-
-    currentGroup
-
+    "Fallback → appropriate program/service.",
+    currentGroup,
+    "If unsure, confirm the student's situation with an advisor before booking."
   );
-
 }
 
+/* =========================================================
+   MISSING INFORMATION
+   ========================================================= */
+
+function showMissing(){
+
+  const result = document.getElementById("result");
+
+  result.className = "card result";
+
+  result.innerHTML = `
+    <div class="icon warn">!</div>
+
+    <div class="advisor" style="font-size:22px">
+      More information needed
+    </div>
+
+    <div class="reason">
+      Please complete the required intake fields:
+      <br><br>
+      • Student status<br>
+      • Current program<br>
+      • Intended program<br>
+      • Completed credits
+      <br><br>
+      If switching programs, also select the new/intended program.
+    </div>
+
+    <div class="panel amber">
+      <b>Tip:</b> If the student intends to switch but does not know to which program,
+      select <b>“Unsure to what program”</b>. The routing result will send them to QS.
+    </div>
+  `;
+}
 
 /* =========================================================
    RESET
@@ -2027,67 +1552,27 @@ function route(){
 
 function resetApp(){
 
-  document
-    .querySelectorAll("select")
-    .forEach(element => {
+  document.querySelectorAll("select").forEach(element => {
+    element.selectedIndex = 0;
+  });
 
-      element.selectedIndex = 0;
+  document.querySelectorAll("input").forEach(element => {
+    element.value = "";
+  });
 
-    });
+  document.getElementById("targetWrap").classList.add("hidden");
+  document.getElementById("enrollmentWrap").classList.add("hidden");
 
+  const result = document.getElementById("result");
 
-  document
-    .querySelectorAll("input")
-    .forEach(element => {
-
-      element.value = "";
-
-    });
-
-
-  document
-    .getElementById("targetWrap")
-    .classList
-    .add("hidden");
-
-
-  const result =
-    document.getElementById("result");
-
-
-  result.className =
-    "card result empty";
-
+  result.className = "card result empty";
 
   result.innerHTML = `
-
-    <div
-      style="
-        font-size:34px;
-        margin-bottom:8px
-      "
-    >
-      ↗
-    </div>
-
-    <strong
-      style="
-        color:var(--navy);
-        font-size:18px
-      "
-    >
-      Recommended route
-    </strong>
-
-    <p>
-      Enter the student's information and select
-      <b>Find Advisor</b>.
-    </p>
-
+    <div style="font-size:34px;margin-bottom:8px">↗</div>
+    <strong style="color:var(--navy);font-size:18px">Recommended route</strong>
+    <p>Enter the student's information and select <b>Find Advisor</b>.</p>
   `;
-
 }
-
 </script>
 
 </body>
