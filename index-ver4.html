@@ -476,6 +476,12 @@ button:hover{opacity:.92}
 
     <br>
 
+    <b>AI&amp;ML PB:</b> Students in the AI&amp;ML post-baccalaureate program meet with Science
+    advisors. This applies at any credit level — the Arts/Science 0–30 → QS rule does not
+    apply to AI&amp;ML PB students.
+
+    <br><br>
+
     <b>Modern Languages:</b> Students in Modern Languages see Arts unless they are in another
     program and taking a MOLA certificate concurrently. In that case, their current program
     advisor advises them.
@@ -484,7 +490,9 @@ button:hover{opacity:.92}
 
     <b>QS / switching exceptions:</b>
     <ul>
-      <li>Students with 0–30 credits in BA, AA, LA, BSc or ASc → QS.</li>
+      <li>Students with 0–30 credits in BA, AA, LA, BSc or ASc → QS.
+          <b>Exception:</b> AI&amp;ML PB students meet with Science advisors even with
+          fewer than 30 credits.</li>
       <li>Students switching to Nursing/Health Sciences who are not enrolled → QS.</li>
       <li>Students switching to Nursing Track → QS.</li>
       <li>Students switching to Trades → QS.</li>
@@ -563,7 +571,8 @@ const programGroups = {
     "BSC/ASC",
     "DAC/BRCP",
     "Engineering Common Core (ECC)",
-    "PB Data Analysis"
+    "PB Data Analysis",
+    "AI&ML PB"
   ],
 
   "Arts": [
@@ -638,6 +647,27 @@ const programGroups = {
 
 /* Special target choice requested during testing */
 const UNSURE_PROGRAM = "Unsure to what program";
+
+/*
+  CREDIT-THRESHOLD EXEMPTIONS
+  ---------------------------
+  Programs listed here always route to their program advisor and are
+  never sent to QS by a completed-credit threshold.
+
+  AI&ML PB students meet with Science advisors even with fewer than
+  30 completed credits, so the Arts/Science 0–30 → QS rule does not
+  apply to them.
+
+  To exempt another program from the credit rules, add its exact
+  program name to this list.
+*/
+const CREDIT_EXEMPT_PROGRAMS = [
+  "AI&ML PB"
+];
+
+function isCreditExempt(program){
+  return CREDIT_EXEMPT_PROGRAMS.includes(program);
+}
 
 /* Create program lookup */
 const programs = [];
@@ -1227,11 +1257,16 @@ function route(){
   /*
     The source notes define Arts and Science 0–30 as QS.
     This must occur before normal Arts routing.
+
+    EXCEPTION: programs in CREDIT_EXEMPT_PROGRAMS (currently AI&ML PB)
+    skip this rule and fall through to normal program-based routing,
+    which sends them to a Science advisor.
   */
   if(
     status === "current" &&
     intent === "same" &&
     cr <= 30 &&
+    !isCreditExempt(current) &&
     (
       currentGroup === "Arts" ||
       currentGroup === "Science/Computer Information Systems"
@@ -1407,12 +1442,20 @@ function route(){
 
   if(currentGroup === "Science/Computer Information Systems"){
 
+    const exempt = isCreditExempt(current);
+
     render(
       "Science / Computer Information Systems Advisor",
-      "The student's program falls under Science/Computer Information Systems.",
-      "Program-based routing → Science/Computer Information Systems advisor.",
+      exempt
+        ? `The student is in ${current}, which always sees a Science advisor regardless of completed credits.`
+        : "The student's program falls under Science/Computer Information Systems.",
+      exempt
+        ? `${current} → Science advisor. The Arts/Science 0–30 → QS rule does not apply to this program.`
+        : "Program-based routing → Science/Computer Information Systems advisor.",
       "Science/Computer Information Systems",
-      "Use the specific program appointment slot where applicable."
+      exempt
+        ? `Do not book ${current} students with QS on the basis of low completed credits.`
+        : "Use the specific program appointment slot where applicable."
     );
 
     return;
