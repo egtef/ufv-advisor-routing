@@ -45,7 +45,7 @@ main{
 }
 
 .hub{
-  max-width:760px;
+  max-width:1020px;
   width:100%;
   text-align:center;
 }
@@ -75,6 +75,7 @@ main{
   align-items:flex-start;
   text-align:left;
   width:300px;
+  min-height:250px;
   background:#fff;
   border:1px solid var(--border);
   border-radius:12px;
@@ -130,6 +131,10 @@ main{
   padding:16px 20px 26px;
 }
 
+@media(max-width:1020px){
+  .hub{max-width:680px}
+}
+
 @media(max-width:680px){
   .choices{flex-direction:column;align-items:center}
   .choice{width:100%;max-width:340px}
@@ -146,7 +151,7 @@ main{
 
 <main>
   <div class="hub">
-    <h2>What service do you need to use?</h2>
+    <h2>What does the student need?</h2>
     <p>Choose a tool to continue.</p>
 
     <div class="choices">
@@ -155,16 +160,24 @@ main{
         <div class="mark">→</div>
         <h3>Routing Assistant</h3>
         <p>Work out which advisor or department a student should be booked with, based on
-        their status, program, enrollment.</p>
+        their status, program, enrollment and completed credits.</p>
         <div class="go">Open Routing Assistant &rarr;</div>
       </a>
 
       <a class="choice" href="advising-place-based.html">
         <div class="mark">◎</div>
-        <h3>Advising Place Based Schedule</h3>
+        <h3>Advising Place Based</h3>
         <p>Look up where place-based advising is happening on a given day, and which
         advisor is at each location.</p>
         <div class="go">Open Advising Place Based &rarr;</div>
+      </a>
+
+      <a class="choice" href="sameday.html">
+        <div class="mark">◷</div>
+        <h3>Same Day Appt Sch.</h3>
+        <p>See which advisor covers same day appointments for each program team,
+        day by day across the week.</p>
+        <div class="go">Open Same Day Appt Sch. &rarr;</div>
       </a>
 
     </div>
