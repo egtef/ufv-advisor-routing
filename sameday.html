@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UFV Same Day Appointment Schedule</title>
+
+<style>
+:root{
+  --navy:#17324d;
+  --blue:#246b9e;
+  --light:#f4f7fa;
+  --border:#d8e0e8;
+  --text:#243342;
+  --muted:#697887;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Segoe UI,Arial,sans-serif;
+  background:var(--light);
+  color:var(--text);
+}
+
+.topbar{
+  background:var(--navy);
+  color:#fff;
+  padding:18px 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.topbar-text h1{margin:0;font-size:21px}
+.topbar-text p{margin:5px 0 0;font-size:13px;opacity:.82}
+
+.back-link{
+  color:#fff;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:600;
+  padding:8px 14px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:7px;
+  white-space:nowrap;
+}
+
+.back-link:hover{background:rgba(255,255,255,.12)}
+
+.wrap{
+  max-width:900px;
+  margin:26px auto;
+  padding:0 20px;
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  box-shadow:0 2px 8px rgba(20,40,60,.05);
+  padding:23px;
+}
+
+h2{margin:0 0 5px;color:var(--navy);font-size:19px}
+.intro{margin:0 0 18px;color:var(--muted);font-size:13px}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:5px;
+}
+
+select{
+  width:100%;
+  padding:10px 11px;
+  border:1px solid #cbd5df;
+  border-radius:7px;
+  background:#fff;
+  font-size:14px;
+  color:var(--text);
+}
+
+select:focus{
+  outline:none;
+  border-color:var(--blue);
+  box-shadow:0 0 0 2px rgba(36,107,158,.1);
+}
+
+.results{margin-top:22px}
+
+.empty{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  padding:30px 10px;
+}
+
+.team-title{
+  font-size:17px;
+  font-weight:700;
+  color:var(--navy);
+  margin-bottom:12px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+
+th,td{
+  text-align:left;
+  padding:10px 12px;
+  border-bottom:1px solid #edf1f4;
+}
+
+th{
+  background:#fafcfd;
+  color:var(--navy);
+  font-size:12px;
+  font-weight:700;
+  border-bottom:1px solid var(--border);
+}
+
+tbody tr:last-child td{border-bottom:0}
+
+td.advisor{
+  font-weight:600;
+  color:var(--navy);
+}
+
+.none{
+  color:var(--muted);
+  font-style:italic;
+}
+
+.note{
+  margin-top:14px;
+  padding:12px;
+  border-radius:8px;
+  background:#f7f9fb;
+  border-left:4px solid var(--blue);
+  font-size:12px;
+  line-height:1.5;
+  color:#526170;
+}
+
+.footer{
+  font-size:10px;
+  color:var(--muted);
+  margin-top:16px;
+  text-align:center;
+}
+
+@media(max-width:620px){
+  .topbar{flex-direction:column;align-items:flex-start}
+  th,td{padding:8px 9px;font-size:12px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="topbar-text">
+    <h1>Same Day Appointment Schedule</h1>
+    <p>Check which advisor covers same day appointments for a program team on each weekday.</p>
+  </div>
+  <a class="back-link" href="index.html">&larr; Back to Home</a>
+</div>
+
+<div class="wrap">
+
+<section class="card">
+
+  <h2>Select a Program Team</h2>
+  <p class="intro">Choose a program team to see the advisor covering same day appointments each day of the week.</p>
+
+  <label for="teamSelect">Program team</label>
+  <select id="teamSelect" onchange="showTeam()">
+    <option value="">Select a program team...</option>
+  </select>
+
+  <div class="results" id="results">
+    <div class="empty">Select a program team above to see the schedule.</div>
+  </div>
+
+</section>
+
+<div class="footer">
+  Prototype only. Confirm same day advisor coverage with the Academic Advising Centre before booking.
+</div>
+
+</div>
+
+<script>
+/* =========================================================
+   SAME DAY APPOINTMENT SCHEDULE
+   =========================================================
+   Each team lists the advisor covering same day appointments
+   on each weekday. Use an empty string "" where no advisor
+   covers that day.
+
+   To update coverage, edit the day values below.
+   ========================================================= */
+
+const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday"];
+
+const teams = [
+
+  {
+    team: "Arts / BIS / Gen",
+    Monday:    "Shannon",
+    Tuesday:   "Kirsten",
+    Wednesday: "Vanessa",
+    Thursday:  "Eve",
+    Friday:    ""
+  },
+
+  {
+    team: "BA AE / CYC / Libit / SW",
+    Monday:    "",
+    Tuesday:   "Deby",
+    Wednesday: "",
+    Thursday:  "Adrian",
+    Friday:    ""
+  },
+
+  {
+    team: "Kin",
+    Monday:    "",
+    Tuesday:   "Kathryn",
+    Wednesday: "Karla (CEP)",
+    Thursday:  "",
+    Friday:    ""
+  },
+
+  {
+    team: "BFA / BMA / Th.",
+    Monday:    "",
+    Tuesday:   "",
+    Wednesday: "",
+    Thursday:  "Paula",
+    Friday:    ""
+  },
+
+  {
+    team: "Science / CIS / Mech",
+    Monday:    "Rilla",
+    Tuesday:   "",
+    Wednesday: "Kristen",
+    Thursday:  "Rhonda",
+    Friday:    ""
+  },
+
+  {
+    team: "QS / Arts 0-30 / Sci. 0-30",
+    Monday:    "Nicholas",
+    Tuesday:   "Kathryn (CEP)",
+    Wednesday: "Holly",
+    Thursday:  "Karen (CEP)",
+    Friday:    ""
+  }
+
+];
+
+/* =========================================================
+   POPULATE TEAM DROPDOWN
+   ========================================================= */
+
+function fillTeams(){
+
+  const select = document.getElementById("teamSelect");
+
+  teams.forEach((entry, index) => {
+    const option = document.createElement("option");
+    option.value = String(index);
+    option.textContent = entry.team;
+    select.appendChild(option);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", fillTeams);
+
+/* =========================================================
+   RENDER SCHEDULE FOR SELECTED TEAM
+   ========================================================= */
+
+function showTeam(){
+
+  const value = document.getElementById("teamSelect").value;
+  const results = document.getElementById("results");
+
+  if(value === ""){
+    results.innerHTML = `<div class="empty">Select a program team above to see the schedule.</div>`;
+    return;
+  }
+
+  const entry = teams[Number(value)];
+
+  const rows = DAYS.map(day => {
+
+    const advisor = entry[day];
+
+    return `
+      <tr>
+        <td>${day}</td>
+        <td class="${advisor ? "advisor" : "none"}">
+          ${advisor ? advisor : "No same day coverage"}
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  const covered = DAYS.filter(day => entry[day]).length;
+
+  results.innerHTML = `
+    <div class="team-title">${entry.team}</div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width:35%">Day</th>
+          <th>Same day advisor</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+
+    <div class="note">
+      <b>Coverage:</b> ${covered} of ${DAYS.length} weekdays have a same day advisor for this team.
+      Days without coverage should be booked as a regular appointment.
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>
